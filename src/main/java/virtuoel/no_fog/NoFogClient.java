@@ -6,8 +6,8 @@ import org.spongepowered.asm.logging.ILogger;
 import org.spongepowered.asm.service.MixinService;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
 import virtuoel.no_fog.api.NoFogConfig;
 import virtuoel.no_fog.util.AutoConfigUtils;
 import virtuoel.no_fog.util.DummyNoFogConfig;
@@ -15,7 +15,6 @@ import virtuoel.no_fog.util.FogToggleType;
 import virtuoel.no_fog.util.FogToggles;
 import virtuoel.no_fog.util.ModLoaderUtils;
 import virtuoel.no_fog.util.ReflectionUtils;
-import virtuoel.no_fog.util.TagCompatibility;
 
 public class NoFogClient implements ClientModInitializer
 {
@@ -40,7 +39,6 @@ public class NoFogClient implements ClientModInitializer
 			AutoConfigUtils.initialize();
 		}
 		
-		TagCompatibility.FluidTags.WATER.getClass();
 	}
 	
 	public static final float FOG_START = -8.0F;
@@ -55,7 +53,7 @@ public class NoFogClient implements ClientModInitializer
 	
 	public static boolean isToggleEnabled(FogToggleType type, Entity entity)
 	{
-		final String dimension = entity.getEntityWorld().getRegistryKey().getValue().toString();
+		final String dimension = entity.level().dimension().identifier().toString();
 		
 		final NoFogConfig config = NoFogClient.CONFIG.get();
 		final FogToggles globalToggles = config.getGlobalToggles();
