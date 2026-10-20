@@ -22,9 +22,9 @@ public abstract class FogRendererMixin
 	private void noFogAdjustDistance(Camera camera, int renderDistance, DeltaTracker deltaTracker, float partialTick, ClientLevel level, CallbackInfoReturnable<?> cir)
 	{
 		final Object fog = cir.getReturnValue();
-		if (fog instanceof FogData fogData)
+		if (fog instanceof FogData)
 		{
-			disableFog(fogData);
+			disableFog((FogData) fog);
 		}
 	}
 

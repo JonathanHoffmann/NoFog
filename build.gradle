@@ -194,6 +194,14 @@ dependencies {
 	}
 }
 
+configurations.named("compileClasspath") {
+	// Compile against the 26.3 libraries while keeping the generated classes Java 8 compatible.
+	attributes.attribute(
+		org.gradle.api.attributes.java.TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE,
+		25
+	)
+}
+
 processResources {
 	inputs.property "version", project.version
 	
@@ -229,7 +237,7 @@ eclipse {
 
 tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
-	options.compilerArgs += [ "-Xmaxwarns", "0" ]
+	options.compilerArgs += [ "-Xmaxwarns", "0", "-Xlint:-options" ]
 	
 	javaCompiler = javaToolchains.compilerFor {
 		if(!proj.hasProperty("neoforge_version") && !proj.hasProperty("forge_version")) {
@@ -253,8 +261,8 @@ java {
 	withSourcesJar()
 	
 	if(!proj.hasProperty("neoforge_version") && !proj.hasProperty("forge_version")) {
-		sourceCompatibility = JavaVersion.VERSION_25
-		targetCompatibility = JavaVersion.VERSION_25
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
 	}
 	else {
 		def minor = minecraftMinor
@@ -286,9 +294,20 @@ jar {
 	from "LICENSE"
 }
 
+tasks.named("jar") {
+	dependsOn(":legacy:remapJar")
+	from(provider {
+		project(":legacy").tasks.named("remapJar").get().archiveFile.get().asFile
+	}) {
+		into "META-INF/jars"
+		rename { "no_fog-legacy.jar" }
+	}
+}
+
 tasks.named("sourcesJar") {
 	exclude "*.mod.json"
 	exclude "META-INF/*mods.toml"
+	from(project(":legacy").file("src/main/java"))
 }
 
 tasks.named({ it in [ "runClient", "runServer" ] }).configureEach {

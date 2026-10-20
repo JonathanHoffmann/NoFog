@@ -1,13 +1,10 @@
 package virtuoel.no_fog;
 
 import java.util.function.Supplier;
-
-import org.spongepowered.asm.logging.ILogger;
-import org.spongepowered.asm.service.MixinService;
-
-import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
+import org.spongepowered.asm.logging.ILogger;
+import org.spongepowered.asm.service.MixinService;
 import virtuoel.no_fog.api.NoFogConfig;
 import virtuoel.no_fog.util.AutoConfigUtils;
 import virtuoel.no_fog.util.DummyNoFogConfig;

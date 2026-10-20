@@ -26,3 +26,11 @@ plugins {
 }
 
 rootProject.name = archives_base_name
+include("legacy")
+
+gradle.beforeProject { project ->
+	if (project.name == "legacy")
+	{
+		project.ext.set("fabric.loom.disableObfuscation", false)
+	}
+}
