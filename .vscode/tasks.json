@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Gradle Build",
+            "type": "shell",
+            "command": "./gradlew build",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "label": "Gradle Build + Deploy",
+            "type": "shell",
+            "command": "./gradlew build && cp \"$(find build/libs -maxdepth 1 -type f -name 'NoFog-*.jar' ! -name '*-sources.jar' -print -quit)\" ~/.minecraft/mods/.",
+            "group": {
+                "kind": "build"
+            }
+        }
+    ]
+}
